@@ -1,9 +1,13 @@
 # Hyperledger-Fabric-v2-K8s-Multinode
 
 ### Create the Kubernetes (K8s) cluster on new fresh machines
-Document Guide - [Setup_Guide](https://docs.google.com/document/d/1IUcPG34ifwIFcejdEfs1xL9oHO6t1obZqt_dx9Z5dvE/edit?usp=sharing)
+Setup Guide - [Document](https://docs.google.com/document/d/1IUcPG34ifwIFcejdEfs1xL9oHO6t1obZqt_dx9Z5dvE/edit?usp=sharing)
 
 Minimum Recommended Nodes - `1 ControlPlane & 2 Worker Nodes`
+
+### Fabric Multinode Setup using Local Persistence and NFS mode
+
+Setup Guide - [Document](https://docs.google.com/document/d/1xyAhyxdZlhnmeau1p4lEDl6GxgPyWhjF2oQbHVzN3kA/edit?usp=sharing)
 
 ### Reset your existing Kubernetes (K8s) Fabric Cluster
 Follow the below steps sequentially for Cluster Cleanup.
