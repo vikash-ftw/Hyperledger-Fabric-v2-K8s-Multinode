@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: fabric-pv-worker1
+spec:
+  capacity:
+    storage: 20Gi  # Not bound to this storage just for pvc to bound to this pv
+  volumeMode: Filesystem # Binding will taken care in pvc
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: local-storage
+  local:
+    path: /mnt/blockchain
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - worker1  # local volume for worker1
