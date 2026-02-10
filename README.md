@@ -1,7 +1,7 @@
 # Hyperledger-Fabric-v2-K8s-Multinode
 
 ### Create the Kubernetes (K8s) cluster on new fresh machines
-Setup Guide - [Document](https://docs.google.com/document/d/1IUcPG34ifwIFcejdEfs1xL9oHO6t1obZqt_dx9Z5dvE/edit?usp=sharing)
+Installation Guide - [Document](https://docs.google.com/document/d/1IUcPG34ifwIFcejdEfs1xL9oHO6t1obZqt_dx9Z5dvE/edit?usp=sharing)
 
 Minimum Recommended Nodes - `1 ControlPlane & 2 Worker Nodes`
 
