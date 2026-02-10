@@ -10,12 +10,12 @@ spec:
       name: register-enroll-certs
     spec:
       volumes:
-        - name: fabricCertsFiles
+        - name: fabricfiles
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
       containers:
         - name: register-enroll-certs
-          image: hyperledger/fabric-ca-tools:latest
+          image: hyperledger/fabric-ca-tools:1.2.1
           resources:
             requests:
               memory: 300Mi
@@ -25,10 +25,10 @@ spec:
               cpu: 250m
           volumeMounts:
             - mountPath: /organizations
-              name: fabricCertsFiles
+              name: fabricfiles
               subPath: organizations
             - mountPath: /scripts
-              name: fabricCertsFiles
+              name: fabricfiles
               subPath: scripts
           command:
             - /bin/sh
