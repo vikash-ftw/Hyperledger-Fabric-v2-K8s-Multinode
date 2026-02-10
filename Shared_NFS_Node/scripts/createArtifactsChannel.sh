@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # create channel
-# pass channel via arg -> createChannel.sh <channel name>
+# pass channel via arg -> createArtifactsChannel.sh <channel name>
 
 CHANNEL_NAME="$1"
 : ${CHANNEL_NAME:="samplechannel"}

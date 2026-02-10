@@ -33,5 +33,5 @@ spec:
             - /bin/bash
             - -c
             - |
-              ./scripts/createChannel.sh
+              ./scripts/createArtifactsChannel.sh
       restartPolicy: Never
