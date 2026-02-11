@@ -24,7 +24,7 @@ spec:
           command:
             [
               "fabric-ca-server" ,
-              "start", "-b" ,"admin:adminpw","--port","7054", "-d"
+              "start", "-b" ,"admin:adminpw", "-d"
             ]
           resources:
             requests:
@@ -38,6 +38,8 @@ spec:
               value: ca-orderer
             - name: FABRIC_CA_SERVER_TLS_ENABLED
               value: 'true'
+            - name: FABRIC_CA_SERVER_PORT
+              value: 7054
             - name: FABRIC_CA_SERVER_CA_REENROLLIGNORECERTEXPIRY
               value: 'true'
           volumeMounts:
