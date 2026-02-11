@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-sdk
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: node-sdk
+  template:
+    metadata:
+      labels:
+        name: node-sdk
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker2
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: fabric-pvc-nfs
+
+      containers:
+        - name: node-sdk
+          stdin: true
+          tty: true
+          env:
+            - name: DEBUG
+              value: "fabric-network:*"
+          image: <sdk_image>:<tag>
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: sdk-env-config
+            - secretRef:
+                name: sdk-secret
+          volumeMounts:
+            - name: data
+              mountPath: /usr/src/app/connection-profile
+              subPath: connection-profile
+            - name: data
+              mountPath: /organizations
+              subPath: organizations
+            - name: data
+              mountPath: /usr/src/app/wallet
+              subPath: wallet
+            - name: data
+              mountPath: /usr/src/app/logs
+              subPath: logs

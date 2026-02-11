@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sdk-env-config
+data:
+  PORT: 8000
+  ORG_DOMAIN_NAME: example.com
+  ORG_MSP: Org1MSP
+  CHANNEL_NAME: samplechannel
+  CHAINCODE_NAME: fabricSmartContractNode
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: sdk-secret
+type: Opaque
+stringData:
+  CA_ADMIN_USERID: admin
+  CA_ADMIN_PASSWORD: <REPLACE_ME>
+  ORG_USER_ID: fabricUser
+  ORG_USER_Secret: <REPLACE_ME>
