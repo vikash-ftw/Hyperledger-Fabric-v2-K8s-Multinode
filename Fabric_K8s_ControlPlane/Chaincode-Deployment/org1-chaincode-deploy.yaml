@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaincode-deploy-org1
+  labels:
+    app: chaincode-deploy-org1
+spec:
+  selector:
+    matchLabels:
+      app: chaincode-deploy-org1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: chaincode-deploy-org1
+    spec:
+      containers:
+        - image: <chaincode_image>:<tag>
+          imagePullPolicy: Always
+          name: chaincode-deploy-org1
+          env:
+            - name: CHAINCODE_ID
+              value: basic:<CC_deployment_token>
+            - name: CHAINCODE_SERVER_ADDRESS
+              value: "0.0.0.0:7052"
+          ports:
+            - containerPort: 7052
