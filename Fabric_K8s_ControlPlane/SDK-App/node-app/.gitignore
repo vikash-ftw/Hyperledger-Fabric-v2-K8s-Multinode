@@ -1,0 +1,10 @@
+# node modules
+node_modules/
+
+package-lock.json
+
+# ignore .txt files
+*.txt
+
+# ignore .log files
+*.log

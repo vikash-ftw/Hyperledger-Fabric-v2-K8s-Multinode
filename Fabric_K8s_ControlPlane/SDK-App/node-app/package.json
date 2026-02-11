@@ -1,0 +1,24 @@
+{
+  "name": "sdk-server",
+  "version": "1.0.0",
+  "description": "Fabric Node SDK server for handling request on Fabric blockchain",
+  "type": "module",
+  "main": "./src/app.js",
+  "engines": {
+    "node": ">=20.14"
+  },
+  "scripts": {
+    "start": "node ./src/app.js"
+  },
+  "engineStrict": true,
+  "author": "Vikash Batham",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^8.1.0",
+    "dotenv": "^16.4.5",
+    "fabric-ca-client": "2.2.20",
+    "fabric-network": "2.2.20"
+  }
+}
