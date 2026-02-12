@@ -7,7 +7,7 @@ data:
   ORG_DOMAIN_NAME: example.com
   ORG_MSP: Org1MSP
   CHANNEL_NAME: samplechannel
-  CHAINCODE_NAME: fabricSmartContractNode
+  CHAINCODE_NAME: fabricSmartContractGo
 
 ---
 apiVersion: v1
