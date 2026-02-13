@@ -5,12 +5,19 @@ SPDX-License-Identifier: Apache-2.0
 package main
 
 import (
+	"fmt"
+	"os"
 	"log"
 
 	"github.com/hyperledger/fabric-chaincode-go/v2/shim"
 	"github.com/hyperledger/fabric-contract-api-go/v2/contractapi"
 	"contract-go/chaincode"
 )
+
+type serverConfig struct {
+	CCID    string
+	Address string
+}
 
 func main() {
 	// create chaincode config from ENV variables
