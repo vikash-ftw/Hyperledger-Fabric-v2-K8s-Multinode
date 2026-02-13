@@ -37,11 +37,11 @@ spec:
             - name: FABRIC_CA_SERVER_CA_NAME
               value: ca-orderer
             - name: FABRIC_CA_SERVER_TLS_ENABLED
-              value: 'true'
+              value: "true"
             - name: FABRIC_CA_SERVER_PORT
-              value: 7054
+              value: "7054"
             - name: FABRIC_CA_SERVER_CA_REENROLLIGNORECERTEXPIRY
-              value: 'true'
+              value: "true"
           volumeMounts:
             - name: data
               mountPath: /etc/hyperledger/fabric-ca-server
