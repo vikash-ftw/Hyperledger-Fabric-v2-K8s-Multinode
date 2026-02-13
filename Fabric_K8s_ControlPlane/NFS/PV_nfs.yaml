@@ -10,5 +10,5 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/shared_nfs
-    server: 10.210.13.86
+    path: /mnt/shared_NFS
+    server: <NFS NODE IP>
