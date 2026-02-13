@@ -9,6 +9,18 @@ Minimum Recommended Nodes - `1 ControlPlane & 2 Worker Nodes`
 
 Setup Guide - [Document](https://docs.google.com/document/d/1xyAhyxdZlhnmeau1p4lEDl6GxgPyWhjF2oQbHVzN3kA/edit?usp=sharing)
 
+Sequence to follow -
+1. NFS
+2. Local-Persistence
+3. CA
+4. Certificates
+5. Artifacts
+6. Orderers
+7. Configmaps
+8. Peers
+9. Chaincode
+10. SDK
+
 ### Reset your existing Kubernetes (K8s) Fabric Cluster
 Follow the below steps sequentially for Cluster Cleanup.
 - Removing existing K8s objects in running cluster:
@@ -28,9 +40,14 @@ Follow the below steps sequentially for Cluster Cleanup.
         ```bash 
         kubectl delete jobs --all 
         ```
-    - Delete fabric specific configmaps -
+    - Delete all configmaps -
         ```bash 
-        kubectl delete configmap builders-config ca-client-config 
+        kubectl delete configmap --all 
+        ```
+    - Delete Persistent Volume and its related claims -
+        ```bash 
+        kubectl delete pvc --all
+        kubectl delete pv --all
         ```
 - Now Remove the cluster and reset the K8s
     - First run on all worker nodes then in the end run on ControlPlane (master) node.
