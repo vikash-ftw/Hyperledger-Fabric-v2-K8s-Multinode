@@ -23,9 +23,6 @@ spec:
             - mountPath: /system-genesis-block
               name: fabricfiles
               subPath: system-genesis-block
-            - mountPath: /channel-artifacts
-              name: fabricfiles
-              subPath: channel-artifacts
             - mountPath: /scripts
               name: fabricfiles
               subPath: scripts
