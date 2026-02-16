@@ -13,16 +13,16 @@ fabric-ca-client enroll -u https://admin:adminpw@ca-orderer:7054 --caname ca-ord
   echo 'NodeOUs:
   Enable: true
   ClientOUIdentifier:
-    Certificate: cacerts/localhost-7054-ca-orderer.pem
+    Certificate: cacerts/ca-orderer-7054-ca-orderer.pem
     OrganizationalUnitIdentifier: client
   PeerOUIdentifier:
-    Certificate: cacerts/localhost-7054-ca-orderer.pem
+    Certificate: cacerts/ca-orderer-7054-ca-orderer.pem
     OrganizationalUnitIdentifier: peer
   AdminOUIdentifier:
-    Certificate: cacerts/localhost-7054-ca-orderer.pem
+    Certificate: cacerts/ca-orderer-7054-ca-orderer.pem
     OrganizationalUnitIdentifier: admin
   OrdererOUIdentifier:
-    Certificate: cacerts/localhost-7054-ca-orderer.pem
+    Certificate: cacerts/ca-orderer-7054-ca-orderer.pem
     OrganizationalUnitIdentifier: orderer' > "/organizations/ordererOrganizations/example.com/msp/config.yaml"
 
 # Copy orderer org's CA cert to orderer org's /msp/tlscacerts directory (for use in the channel MSP definition)
