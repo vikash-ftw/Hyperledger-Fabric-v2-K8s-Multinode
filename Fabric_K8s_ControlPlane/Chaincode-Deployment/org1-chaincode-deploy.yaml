@@ -16,7 +16,7 @@ spec:
         app: chaincode-deploy-org1
     spec:
       containers:
-        - image: <chaincode_image>:<tag>
+        - image: vikashftw/product-contract-go:1.0
           imagePullPolicy: Always
           name: chaincode-deploy-org1
           env:
