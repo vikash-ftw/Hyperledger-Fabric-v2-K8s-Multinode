@@ -1,9 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: cc-org1
+  name: chaincode-org1 
+  # metadata name should match with address value in connection.json chaincode pkg folder
   labels:
-    app: cc-org1
+    app: chaincode-org1
 spec:
   ports:
     - name: grpc

@@ -1,5 +1,5 @@
 {
-    "address": "product-contract-go:7052",
+    "address": "chaincode-org1:7052",
     "dial_timeout": "10s",
     "tls_required": false,
     "client_auth_required": false,
