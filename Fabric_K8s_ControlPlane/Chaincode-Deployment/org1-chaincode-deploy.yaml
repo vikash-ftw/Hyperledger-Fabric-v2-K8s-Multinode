@@ -25,6 +25,6 @@ spec:
             - name: CHAINCODE_SERVER_ADDRESS
               value: "0.0.0.0:7052"
             - name: CHAINCODE_NAME
-              value: <Chaincode_Name>
+              value: fabricSmartContractGo
           ports:
             - containerPort: 7052
