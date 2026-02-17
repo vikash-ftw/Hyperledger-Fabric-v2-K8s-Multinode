@@ -21,10 +21,10 @@ spec:
           name: chaincode-deploy-org1
           env:
             - name: CHAINCODE_ID
-              value: basic:<CC_deployment_token>
+              value: <label>:<CC_deployment_token>
             - name: CHAINCODE_SERVER_ADDRESS
               value: "0.0.0.0:7052"
             - name: CHAINCODE_NAME
-              value: fabricSmartContractGo
+              value: <Chaincode_Name>
           ports:
             - containerPort: 7052
