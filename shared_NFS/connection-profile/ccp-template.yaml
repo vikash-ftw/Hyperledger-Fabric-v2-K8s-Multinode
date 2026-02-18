@@ -51,7 +51,6 @@ certificateAuthorities:
     url: https://ca-org${ORG}:${CAPORT}
     caName: ca-org${ORG}
     tlsCACerts:
-      pem:
-      - "${CAPEM}"
+      pem: "${CAPEM}"
     httpOptions:
       verify: false
