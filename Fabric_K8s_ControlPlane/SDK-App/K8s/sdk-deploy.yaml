@@ -34,8 +34,8 @@ spec:
           env:
             - name: DEBUG
               value: "fabric-network:*"
-          image: <sdk_image>:<tag>
-          imagePullPolicy: IfNotPresent
+          image: vikashftw/fabric-node-sdk:1.0
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: sdk-env-config
@@ -45,9 +45,6 @@ spec:
             - name: data
               mountPath: /usr/src/app/connection-profile
               subPath: connection-profile
-            - name: data
-              mountPath: /organizations
-              subPath: organizations
             - name: data
               mountPath: /usr/src/app/wallet
               subPath: wallet
