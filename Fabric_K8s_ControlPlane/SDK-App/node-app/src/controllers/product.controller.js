@@ -12,9 +12,6 @@ const GREEN = "\x1b[32m\n";
 const BLUE = "\x1b[34m";
 const RESET = "\x1b[0m";
 
-// Env variable to allow OffChain Data Sync
-const allow_offchain = process.env.ALLOW_OFFCHAIN_SYNC.toLowerCase();
-
 const addProduct = asyncHandler(async (req, res) => {
   console.log(`${BLUE}--- Controller: addProduct called ---${RESET}`);
   const { productNumber, productManufacturer, productName, productOwnerName } =

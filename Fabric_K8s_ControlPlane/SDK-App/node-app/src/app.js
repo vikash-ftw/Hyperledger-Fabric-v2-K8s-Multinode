@@ -3,12 +3,19 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import crypto from "crypto";
 
 const app = express();
 const port = process.env.PORT;
+
 // for enabling CORS policy
 app.use(cors());
+
 // to set strict security for HTTP headers
+// generating CSP random nonce
+function generateNonce() {
+  return crypto.randomBytes(16).toString("hex").substr(0, 8);
+}
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -67,16 +74,17 @@ const register = async () => {
     console.log("USER CREATED : ", result);
     return result;
   } catch (error) {
-    return error;
+    throw new Error(`Error in register() function: ${error}`);
   }
 };
 
-// import utility functions for OffChain Sync Purpose
-import { initiateNextBlockDocument, handleTxnBlockEvent } from "./utils/offChainTxnBlockHandler.js";
-
 const startServer = async () => {
   try {
-    await register();
+    let user = await register();
+    console.log(`USER CREATED OR NOT --> ${JSON.stringify(user)}`);
+    if(!user) {
+      throw new Error(`User is not registered !!`);
+    }
     console.log("Checking Gateway Connection...");
     const instance = await initiateConnection();
     console.log("** Gateway Connection Established **");
@@ -85,16 +93,6 @@ const startServer = async () => {
     app.listen(port, () => {
       console.log(`Server is listening at port- ${port}`);
     });
-
-    // for Offchain attaching block listener on channel network
-    if(allow_offchain === "true") {
-       // attach blockListener on all channels
-      const channelName = process.env.CHANNEL_NAME;
-      const network = await instance.getNetwork(channelName);
-      // now handle block events for OffChain Data Sync
-      await handleTxnBlockEvent(network);
-    }
-    
   } catch (error) {
     console.log(`Server Error: ${error}`);
   }

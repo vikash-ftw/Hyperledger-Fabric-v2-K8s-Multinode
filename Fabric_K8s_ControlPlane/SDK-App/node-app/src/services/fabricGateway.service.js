@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 const org = process.env.ORG_MSP;
 const userId = process.env.ORG_USER_ID;
 
-const walletPath = path.join(__dirname, "wallet");
+const walletPath = path.join(__dirname, "../../wallet");
 
 const singletonConnection = (function () {
   let instance = null;
@@ -65,7 +65,7 @@ const singletonConnection = (function () {
       const connectOptions = {
         wallet,
         identity: userId,
-        discovery: { enabled: true, asLocalhost: true },
+        discovery: { enabled: true, asLocalhost: false },
       };
       const gateway = new Gateway();
 

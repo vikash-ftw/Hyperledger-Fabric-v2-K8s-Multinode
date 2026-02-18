@@ -11,7 +11,7 @@ const __dirname = path.dirname(__filename);
 const buildCCPOrg1 = () => {
   // Resolve the path as in CommonJS
   // load the Common Connection Profile(CCP) path
-  const ccpPath = path.resolve(__dirname, "connection-profile/connection-org1.json");
+  const ccpPath = path.resolve(__dirname, "../../connection-profile/connection-org1.json");
   const fileExists = fs.existsSync(ccpPath);
   if (!fileExists) {
     throw new Error(`no such file or directory: ${ccpPath}`);
