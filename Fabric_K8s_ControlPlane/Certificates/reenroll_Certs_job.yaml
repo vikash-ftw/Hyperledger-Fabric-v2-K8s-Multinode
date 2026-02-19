@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: reenroll-expired-certs
+spec:
+  parallelism: 1
+  completions: 1
+  template:
+    metadata:
+      name: reenroll-expired-certs
+    spec:
+      volumes:
+        - name: fabric-nfs
+          persistentVolumeClaim:
+            claimName: fabric-pvc-nfs
+      containers:
+        - name: reenroll-expired-certs
+          image: hyperledger/fabric-ca:1.5.11
+          resources:
+            requests:
+              memory: 300Mi
+              cpu: 200m
+            limits:
+              memory: 400Mi
+              cpu: 250m
+          volumeMounts:
+            - mountPath: /organizations
+              name: fabric-nfs
+              subPath: organizations
+            - mountPath: /scripts
+              name: fabric-nfs
+              subPath: scripts
+          command:
+            - /bin/sh
+            - -c
+            - |
+              ./scripts/reenroll-orderer-certs.sh &&
+              ./scripts/reenroll-org1-certs.sh
+      restartPolicy: Never
