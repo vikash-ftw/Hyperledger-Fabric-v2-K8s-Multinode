@@ -26,6 +26,13 @@ spec:
         - name: data
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
+        - name: ca-client-config
+          configMap:
+            name: sdk-env-config
+            items:
+              - key: config.json
+                path: config.json
+                mode: 0544
 
       containers:
         - name: node-sdk
@@ -51,3 +58,6 @@ spec:
             - name: data
               mountPath: /usr/src/app/logs
               subPath: logs
+            - name: ca-client-config
+              mountPath: /usr/src/app/config.json
+              subPath: config.json

@@ -7,6 +7,15 @@ data:
   ORG_MSP: Org1MSP
   CHANNEL_NAME: samplechannel
   CHAINCODE_NAME: fabricSmartContractGo
+  config.json: |-
+      {
+      "request-timeout" : 40000,
+      "tcert-batch-size" : 10,
+      "crypto-hash-algo": "SHA2",
+      "crypto-keysize": 256,
+      "crypto-hsm": false,
+      "connection-timeout": 40000
+      }
 
 ---
 apiVersion: v1

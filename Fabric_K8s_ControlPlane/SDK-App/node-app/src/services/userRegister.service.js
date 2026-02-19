@@ -3,6 +3,8 @@
 import FabricCAServices from "fabric-ca-client";
 import { Wallets } from "fabric-network";
 import { buildWallet } from "./AppUtil.service.js";
+// to fix CA Authentication failure
+import {Utils as utils} from "fabric-common";
 import {
   buildCAClient,
   enrollAdmin,
@@ -15,6 +17,10 @@ import { fileURLToPath } from "url";
 // Convert the current module's URL to a file path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// to fix CA Authentication failure
+let config = utils.getConfig();
+config.file(path.resolve(__dirname, "../../config.json"));
 
 let walletPath;
 
