@@ -23,7 +23,7 @@ spec:
                     values:
                       - worker2
       volumes:
-        - name: data
+        - name: fabric-nfs
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
         - name: ca-client-config
@@ -49,13 +49,13 @@ spec:
             - secretRef:
                 name: sdk-secret
           volumeMounts:
-            - name: data
+            - name: fabric-nfs
               mountPath: /usr/src/app/connection-profile
               subPath: connection-profile
-            - name: data
+            - name: fabric-nfs
               mountPath: /usr/src/app/wallet
               subPath: wallet
-            - name: data
+            - name: fabric-nfs
               mountPath: /usr/src/app/logs
               subPath: logs
             - name: ca-client-config

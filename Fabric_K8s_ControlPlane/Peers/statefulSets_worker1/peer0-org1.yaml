@@ -24,7 +24,7 @@ spec:
                       - worker1
 
       volumes:
-        - name: fabricfiles
+        - name: fabric-local
           persistentVolumeClaim:
             claimName: fabric-pvc-worker1
 
@@ -122,13 +122,13 @@ spec:
           
           volumeMounts:
             - mountPath: /builders/external/chaincode  #/opt/gopath/src/github.com/chaincode/
-              name: fabricfiles
+              name: fabric-local
               subPath: chaincode/
             - mountPath: /organizations
-              name: fabricfiles
+              name: fabric-local
               subPath: organizations
             - mountPath: /var/hyperledger/production
-              name: fabricfiles
+              name: fabric-local
               subPath: state/org1/peer0
             - mountPath: /etc/hyperledger/fabric/core.yaml
               name: builders-config
@@ -153,5 +153,5 @@ spec:
               value: adminpw
           volumeMounts:
             - mountPath: /opt/couchdb/data
-              name: fabricfiles
+              name: fabric-local
               subPath: state/org1/peer0-couchdb

@@ -24,7 +24,7 @@ spec:
                             - worker2
 
            volumes:
-             - name: fabricfiles
+             - name: fabric-local
                persistentVolumeClaim:
                   claimName: fabric-pvc-worker2
 
@@ -64,13 +64,13 @@ spec:
 
                volumeMounts:
                 - mountPath: /organizations
-                  name: fabricfiles
+                  name: fabric-local
                   subPath: organizations
 
                 - mountPath: /system-genesis-block
-                  name: fabricfiles
+                  name: fabric-local
                   subPath: system-genesis-block
 
                 - mountPath: /var/hyperledger/production
-                  name: fabricfiles
+                  name: fabric-local
                   subPath: orderer-data/orderer4

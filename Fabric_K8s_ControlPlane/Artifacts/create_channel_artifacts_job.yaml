@@ -6,7 +6,7 @@ spec:
   template:
     spec:
       volumes:
-        - name: fabricfiles
+        - name: fabric-nfs
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
       containers:
@@ -15,19 +15,19 @@ spec:
           workingDir: /
           volumeMounts:
             - mountPath: /organizations
-              name: fabricfiles
+              name: fabric-nfs
               subPath: organizations
             - mountPath: /configtx
-              name: fabricfiles
+              name: fabric-nfs
               subPath: configtx
             - mountPath: /system-genesis-block
-              name: fabricfiles
+              name: fabric-nfs
               subPath: system-genesis-block
             - mountPath: /channel-artifacts
-              name: fabricfiles
+              name: fabric-nfs
               subPath: channel-artifacts
             - mountPath: /scripts
-              name: fabricfiles
+              name: fabric-nfs
               subPath: scripts
           command:
             - /bin/bash

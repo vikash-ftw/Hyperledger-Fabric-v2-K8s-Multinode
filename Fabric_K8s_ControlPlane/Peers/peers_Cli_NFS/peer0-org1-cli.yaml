@@ -12,7 +12,7 @@ spec:
         name: cli-peer0-org1
     spec:
       volumes:
-        - name: fabricfiles
+        - name: fabric-nfs
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
 
@@ -63,17 +63,17 @@ spec:
               value: DEBUG
           volumeMounts:
             - mountPath: /organizations
-              name: fabricfiles
+              name: fabric-nfs
               subPath: organizations
             - mountPath: /configtx
-              name: fabricfiles
+              name: fabric-nfs
               subPath: configtx
             - mountPath: /channel-artifacts
-              name: fabricfiles
+              name: fabric-nfs
               subPath: channel-artifacts
             - mountPath: /scripts
-              name: fabricfiles
+              name: fabric-nfs
               subPath: scripts
             - mountPath: /builders/external/chaincode  #/opt/gopath/src/github.com/chaincode/
-              name: fabricfiles
+              name: fabric-nfs
               subPath: chaincode

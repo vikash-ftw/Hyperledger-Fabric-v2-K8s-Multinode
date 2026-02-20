@@ -13,7 +13,7 @@ spec:
         app: ca-orderer
     spec:
       volumes:
-        - name: data
+        - name: fabric-nfs
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
 
@@ -47,6 +47,6 @@ spec:
             - name: FABRIC_CA_SERVER_CA_REENROLLIGNORECERTEXPIRY
               value: "true"
           volumeMounts:
-            - name: data
+            - name: fabric-nfs
               mountPath: /etc/hyperledger/fabric-ca-server
               subPath: organizations/fabric-ca/ordererOrg

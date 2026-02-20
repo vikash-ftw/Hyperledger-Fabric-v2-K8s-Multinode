@@ -10,7 +10,7 @@ spec:
       name: register-enroll-certs
     spec:
       volumes:
-        - name: fabricfiles
+        - name: fabric-nfs
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
       containers:
@@ -25,10 +25,10 @@ spec:
               cpu: 250m
           volumeMounts:
             - mountPath: /organizations
-              name: fabricfiles
+              name: fabric-nfs
               subPath: organizations
             - mountPath: /scripts
-              name: fabricfiles
+              name: fabric-nfs
               subPath: scripts
           command:
             - /bin/sh
