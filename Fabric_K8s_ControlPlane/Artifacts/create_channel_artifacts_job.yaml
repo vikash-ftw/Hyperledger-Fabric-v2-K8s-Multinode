@@ -20,9 +20,6 @@ spec:
             - mountPath: /configtx
               name: fabric-nfs
               subPath: configtx
-            - mountPath: /system-genesis-block
-              name: fabric-nfs
-              subPath: system-genesis-block
             - mountPath: /channel-artifacts
               name: fabric-nfs
               subPath: channel-artifacts

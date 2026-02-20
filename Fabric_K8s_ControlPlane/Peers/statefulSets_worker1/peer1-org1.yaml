@@ -122,9 +122,6 @@ spec:
             - containerPort: 9443
 
           volumeMounts:
-            - mountPath: /builders/external/chaincode  #/opt/gopath/src/github.com/chaincode/
-              name: fabric-local
-              subPath: chaincode/
             - mountPath: /organizations
               name: fabric-local
               subPath: organizations
