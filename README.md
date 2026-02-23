@@ -18,8 +18,10 @@ Sequence to follow -
 6. Orderers
 7. Configmaps
 8. Peers
-9. Chaincode
-10. SDK
+9. Channel Block File
+10. Chaincode
+11. CCP Generation
+12. SDK
 
 ### Reset your existing Kubernetes (K8s) Fabric Cluster
 Follow the below steps sequentially for Cluster Cleanup.
@@ -62,4 +64,3 @@ Follow the below steps sequentially for Cluster Cleanup.
         ```bash 
         rm -rf .kube/ 
         ```
-
