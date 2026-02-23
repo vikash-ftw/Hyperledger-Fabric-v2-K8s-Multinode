@@ -23,7 +23,43 @@ spec:
                           values:
                             - worker2
 
+           initContainers:
+             - name: sync-from-nfs
+               image: busybox:latest
+               command:
+                 - sh
+                 - -c
+                 - |
+                   set -e
+                   # 1. Verify NFS is actually mounted and reachable
+                   if [ ! -d /nfs-mount/organizations ] || [! -d /nfs-mount/system-genesis-block] || [! -d /nfs-mount/channel-artifacts]; then
+                     echo "ERROR: NFS source not found OR `organizations, system-genesis-block, channel-artifacts` folder not exist.. Therefore cannot sync !!"
+                     exit 1
+                   fi
+                   # 2. Check if the folder is already on local disk and NOT empty
+                   if [ -d /local-mount/organizations ] && [ "$(ls -A /local-mount/organizations)" ]; then
+                     echo "Found existing crypto data on local disk. Skipping sync to save I/O."
+                   else
+                     echo "Shared disk is empty or missing data. Starting Bulk Sync from NFS..."
+                     mkdir -p /local-mount/organizations
+                     mkdir -p /local-mount/system-genesis-block
+                     mkdir -p /local-mount/channel-artifacts
+                     cp -af /nfs-mount/organizations/* /local-mount/organizations/
+                     cp -af /nfs-mount/system-genesis-block/* /local-mount/system-genesis-block/
+                     cp -af /nfs-mount/channel-artifacts/* /local-mount/channel-artifacts/
+                     echo "--- Sync complete. ---"
+                   fi
+                   
+               volumeMounts:
+                - name: fabric-nfs
+                  mountPath: /nfs-mount
+                - name: fabric-local
+                  mountPath: /local-mount
+
            volumes:
+             - name: fabric-nfs
+               persistentVolumeClaim:
+                  claimName: fabric-pvc-nfs
              - name: fabric-local
                persistentVolumeClaim:
                   claimName: fabric-pvc-worker2
