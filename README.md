@@ -44,6 +44,10 @@ Follow the below steps sequentially for Cluster Cleanup.
         ```bash 
         kubectl delete configmap --all 
         ```
+    - Delete all secrets -
+        ```bash 
+        kubectl delete secret --all 
+        ```
     - Delete Persistent Volume and its related claims -
         ```bash 
         kubectl delete pvc --all
