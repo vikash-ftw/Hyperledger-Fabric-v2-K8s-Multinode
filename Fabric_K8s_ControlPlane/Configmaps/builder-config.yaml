@@ -64,6 +64,11 @@ data:
             cp -a $CHAINCODE_SOURCE_DIR/metadata $BUILD_OUTPUT_DIR/metadata
         fi
 
+        # (vikashB logic) to copy indexes stored in META-INF folder to specific Build location
+        if [ -d "$CHAINCODE_SOURCE_DIR/META-INF" ]; then
+            cp -a "$CHAINCODE_SOURCE_DIR/META-INF" "$BUILD_OUTPUT_DIR/"
+        fi
+
         exit 0
 
     release: |
@@ -83,6 +88,12 @@ data:
 
         BUILD_OUTPUT_DIR="$1"
         RELEASE_OUTPUT_DIR="$2"
+
+        # (vikashB logic) copy indexes to release directory
+        if [ -d "$BUILD_OUTPUT_DIR/META-INF" ]; then
+            mkdir -p "$RELEASE_OUTPUT_DIR/statedb"
+            cp -a "$BUILD_OUTPUT_DIR/META-INF/"* "$RELEASE_OUTPUT_DIR/"
+        fi
 
         # copy indexes from metadata/* to the output directory
         # if [ -d "$BUILD_OUTPUT_DIR/metadata" ] ; then
