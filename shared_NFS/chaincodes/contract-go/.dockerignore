@@ -17,3 +17,6 @@ Dockerfile*
 docker-compose*
 .dockerignore
 
+# tar files
+*.gz
+*.tgz
