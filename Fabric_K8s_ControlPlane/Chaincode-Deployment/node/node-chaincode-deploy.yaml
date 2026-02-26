@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-chaincode-deploy
+  labels:
+    app: node-chaincode-deploy
+spec:
+  selector:
+    matchLabels:
+      app: node-chaincode-deploy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: node-chaincode-deploy
+    spec:
+      containers:
+        - image: vikashftw/product-contract-node:1.0
+          imagePullPolicy: Always
+          name: node-chaincode-deploy
+          env:
+            - name: CORE_CHAINCODE_ID
+              value: <label>:<CC_deployment_token>
+            - name: CORE_CHAINCODE_ADDRESS
+              value: "0.0.0.0:7053"
+            - name: CHAINCODE_NAME
+              value: fabric-smartcontract-node
+          ports:
+            - containerPort: 7053
