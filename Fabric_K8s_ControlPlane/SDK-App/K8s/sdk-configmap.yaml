@@ -6,8 +6,8 @@ data:
   PORT: "8000"
   ORG_MSP: Org1MSP
   CHANNEL_NAME: samplechannel
-  CHAINCODE_NAME: fabric-smartcontract-go
-  RE_ENROLL_USER_ID: "false"
+  CHAINCODE_NAME: <Chaincode-Name>  # fabric-smartcontract-node or fabric-smartcontract-go
+  RE_ENROLL_USER_ID: "false"  # After renewing certs immediately set it to false then apply it
   config.json: |-
       {
       "request-timeout" : 40000,

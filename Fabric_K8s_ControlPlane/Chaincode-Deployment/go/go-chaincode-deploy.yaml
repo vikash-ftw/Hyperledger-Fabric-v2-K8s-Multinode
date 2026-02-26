@@ -21,7 +21,7 @@ spec:
           name: go-chaincode-deploy
           env:
             - name: CHAINCODE_ID
-              value: <label>:<CC_deployment_token>
+              value: fabric-smartcontract-go:<CC_deployment_token>
             - name: CHAINCODE_SERVER_ADDRESS
               value: "0.0.0.0:7052"
             - name: CHAINCODE_NAME
