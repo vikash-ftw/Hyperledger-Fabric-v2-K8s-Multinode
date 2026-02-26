@@ -1,0 +1,16 @@
+# fabric network generated files
+organizations
+system-genesis-block
+channel-artifacts
+chaincode
+logs
+wallet
+connection-profile/*org1.json
+connection-profile/*org1.yaml
+
+# tar files
+*.gz
+*.tgz
+
+*.txt
+*.log
