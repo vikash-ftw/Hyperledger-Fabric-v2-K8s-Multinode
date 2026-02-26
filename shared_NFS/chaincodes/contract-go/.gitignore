@@ -1,0 +1,9 @@
+# Binary outputs
+*.exe
+*.dll
+*.so
+*.dylib
+/bin
+/build
+
+go.sum

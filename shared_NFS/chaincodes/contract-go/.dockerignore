@@ -1,0 +1,19 @@
+# Binary outputs
+*.exe
+*.dll
+*.so
+*.dylib
+/bin
+/build
+
+go.sum
+
+# Git
+.git
+.gitignore
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
