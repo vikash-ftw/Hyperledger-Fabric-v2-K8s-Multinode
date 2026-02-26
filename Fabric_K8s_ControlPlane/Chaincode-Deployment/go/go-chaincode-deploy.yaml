@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chaincode-deploy-org1
+  name: go-chaincode-deploy
   labels:
-    app: chaincode-deploy-org1
+    app: go-chaincode-deploy
 spec:
   selector:
     matchLabels:
-      app: chaincode-deploy-org1
+      app: go-chaincode-deploy
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: chaincode-deploy-org1
+        app: go-chaincode-deploy
     spec:
       containers:
         - image: vikashftw/product-contract-go:1.0
           imagePullPolicy: Always
-          name: chaincode-deploy-org1
+          name: go-chaincode-deploy
           env:
             - name: CHAINCODE_ID
               value: <label>:<CC_deployment_token>
