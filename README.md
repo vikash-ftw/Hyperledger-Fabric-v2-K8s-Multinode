@@ -3,7 +3,7 @@
 ### Create the Kubernetes (K8s) cluster on new fresh machines
 Installation Guide - [Document](https://docs.google.com/document/d/1IUcPG34ifwIFcejdEfs1xL9oHO6t1obZqt_dx9Z5dvE/edit?usp=sharing)
 
-Minimum Recommended Nodes - `1 ControlPlane & 2 Worker Nodes`
+Cluster Nodes - `1 ControlPlane & 2 Worker Nodes`
 
 ### Fabric Multinode Setup using Local Persistence and NFS mode
 
@@ -18,10 +18,13 @@ Sequence to follow -
 6. Orderers
 7. Configmaps
 8. Peers
-9. Channel Block File
-10. Chaincode
-11. CCP Generation
-12. SDK
+9. Channel block file creation via peer cli 
+10. Chaincode packaging in NFS mount
+11. Chaincode install in peer via peer cli
+12. Chaincode-Deployment
+13. Chaincode approve and then commit and invoke via peer cli
+14. CCP generation in NFS mount
+15. SDK-App
 
 ### Reset your existing Kubernetes (K8s) Fabric Cluster
 Follow the below steps sequentially for Cluster Cleanup.
