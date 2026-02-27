@@ -21,10 +21,10 @@ spec:
           name: go-chaincode-deploy
           env:
             - name: CHAINCODE_ID
-              value: fabric-smartcontract-go:<CC_deployment_token>
+              value: smartcontract-go:<CC_deployment_token>
             - name: CHAINCODE_SERVER_ADDRESS
               value: "0.0.0.0:7052"
             - name: CHAINCODE_NAME
-              value: fabric-smartcontract-go
+              value: smartcontract-go
           ports:
             - containerPort: 7052

@@ -21,10 +21,10 @@ spec:
           name: node-chaincode-deploy
           env:
             - name: CORE_CHAINCODE_ID
-              value: fabric-smartcontract-node:<CC_deployment_token>
+              value: smartcontract-node:<CC_deployment_token>
             - name: CORE_CHAINCODE_ADDRESS
               value: "0.0.0.0:7053"
             - name: CHAINCODE_NAME
-              value: fabric-smartcontract-node
+              value: smartcontract-node
           ports:
             - containerPort: 7053
