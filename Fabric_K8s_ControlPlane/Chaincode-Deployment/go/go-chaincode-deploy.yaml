@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: go-chaincode-deploy
+  name: chaincode-go-deploy
   labels:
-    app: go-chaincode-deploy
+    app: chaincode-go
 spec:
   selector:
     matchLabels:
-      app: go-chaincode-deploy
+      app: chaincode-go
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: go-chaincode-deploy
+        app: chaincode-go
     spec:
       containers:
         - image: vikashftw/product-contract-go:1.0
           imagePullPolicy: Always
-          name: go-chaincode-deploy
+          name: chaincode-go
           env:
             - name: CHAINCODE_ID
               value: smartcontract-go:<CC_deployment_token>

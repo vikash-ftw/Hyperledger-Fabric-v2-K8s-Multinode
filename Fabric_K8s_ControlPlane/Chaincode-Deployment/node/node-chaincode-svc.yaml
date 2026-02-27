@@ -11,4 +11,4 @@ spec:
       port: 7053
       targetPort: 7053
   selector:
-    app: node-chaincode-deploy
+    app: chaincode-node

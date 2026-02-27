@@ -11,4 +11,4 @@ spec:
       port: 7052
       targetPort: 7052
   selector:
-    app: go-chaincode-deploy
+    app: chaincode-go

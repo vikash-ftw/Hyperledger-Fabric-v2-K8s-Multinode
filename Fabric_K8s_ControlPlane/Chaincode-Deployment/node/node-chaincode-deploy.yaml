@@ -1,24 +1,24 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-chaincode-deploy
+  name: chaincode-node-deploy
   labels:
-    app: node-chaincode-deploy
+    app: chaincode-node
 spec:
   selector:
     matchLabels:
-      app: node-chaincode-deploy
+      app: chaincode-node
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: node-chaincode-deploy
+        app: chaincode-node
     spec:
       containers:
         - image: vikashftw/product-contract-node:1.0
           imagePullPolicy: Always
-          name: node-chaincode-deploy
+          name: chaincode-node
           env:
             - name: CORE_CHAINCODE_ID
               value: smartcontract-node:<CC_deployment_token>
