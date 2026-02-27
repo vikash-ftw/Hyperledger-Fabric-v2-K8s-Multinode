@@ -6,6 +6,9 @@
 /bin
 /build
 
+# packaging directory
+packaging
+
 go.sum
 
 # Git
