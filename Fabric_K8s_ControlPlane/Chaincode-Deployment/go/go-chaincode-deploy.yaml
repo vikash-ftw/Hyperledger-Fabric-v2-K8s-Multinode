@@ -1,9 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chaincode-go-deploy
+  name: external-chaincode-go
   labels:
-    app: chaincode-go
+    app: external-chaincode-go
+    component: smart-contract
+    
 spec:
   selector:
     matchLabels:

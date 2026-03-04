@@ -1,7 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: node-sdk
+  name: node-sdk-app
+  labels:
+    app: node-sdk-app
+    component: api
+
 spec:
   replicas: 1
   selector:

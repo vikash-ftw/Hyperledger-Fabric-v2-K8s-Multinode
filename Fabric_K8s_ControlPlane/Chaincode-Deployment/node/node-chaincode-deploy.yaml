@@ -1,9 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chaincode-node-deploy
+  name: external-chaincode-node
   labels:
-    app: chaincode-node
+    app: external-chaincode-node
+    component: smart-contract
+
 spec:
   selector:
     matchLabels:
