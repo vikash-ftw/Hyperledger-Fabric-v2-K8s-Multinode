@@ -1,0 +1,170 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorer-app
+  labels:
+    app: explorer-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hyperledger-explorer
+  template:
+    metadata:
+      labels:
+        app: hyperledger-explorer
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker1
+
+      # ── initContainers block ──
+      initContainers:
+        # Step 1 — Resolve dynamic *_sk keystore filename and write final
+        # explorer-profile.json from ConfigMap template before Explorer starts
+        - name: resolve-keystore
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              KEYSTORE_DIR="/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore"
+              TEMPLATE="/etc/explorer-config/explorer-profile.template.json"
+              OUTPUT="/fabric-explorer/connection-profile/explorer-profile.json"
+
+              echo "Resolving keystore filename..."
+              KEY_FILE=$(ls "$KEYSTORE_DIR"/*_sk 2>/dev/null | head -n 1 | xargs basename)
+
+              if [ -z "$KEY_FILE" ]; then
+                echo "ERROR: No *_sk file found in $KEYSTORE_DIR"
+                exit 1
+              fi
+
+              echo "Found keystore file: $KEY_FILE"
+              sed "s/KEYSTORE_PLACEHOLDER/$KEY_FILE/g" "$TEMPLATE" > "$OUTPUT"
+
+              if [ ! -s "$OUTPUT" ]; then
+                echo "ERROR: Failed to write $OUTPUT — check NFS directory permissions"
+                exit 1
+              fi
+
+              echo "explorer-profile.json created successfully."
+              cat "$OUTPUT"
+          volumeMounts:
+            - name: fabric-nfs
+              mountPath: /tmp/crypto
+              subPath: organizations
+            - name: fabric-nfs
+              mountPath: /fabric-explorer/connection-profile
+              subPath: explorer/connection-profile
+            - name: explorer-config
+              mountPath: /etc/explorer-config
+
+        # Step 2 — Wait for ExplorerDB to be ready before Explorer starts
+        - name: wait-for-db
+          image: busybox:1.36
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for explorerdb to be ready..."
+              until nc -z explorerdb-svc 5432; do
+                echo "explorerdb not ready yet, sleeping 5s..."
+                sleep 5
+              done
+              echo "explorerdb is up!"  
+
+      volumes:
+        - name: explorer-config
+          configMap:
+            name: explorer-config
+        - name: fabric-nfs
+          persistentVolumeClaim:
+            claimName: fabric-pvc-nfs
+
+      containers:
+        - name: explorer
+          image: ghcr.io/hyperledger-labs/explorer:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            # Points to K8s Service name instead of Docker hostname
+            - name: DATABASE_HOST
+              value: "explorerdb-svc"
+            - name: DATABASE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_DATABASE
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_USERNAME
+            - name: DATABASE_PASSWD
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_PASSWORD
+            - name: LOG_LEVEL_APP
+              value: "info"
+            - name: LOG_LEVEL_DB
+              value: "info"
+            - name: LOG_LEVEL_CONSOLE
+              value: "debug"
+            - name: LOG_CONSOLE_STDOUT
+              value: "true"
+            - name: DISCOVERY_AS_LOCALHOST
+              value: "false"
+            - name: PORT
+              value: "8080"
+          volumeMounts:
+            # config.json injected via ConfigMap
+            - name: explorer-config
+              mountPath: /opt/explorer/app/platform/fabric/config.json
+              subPath: config.json
+            # Connection profile dir — sourced from NFS share
+            - name: fabric-nfs
+              mountPath: /opt/explorer/app/platform/fabric/connection-profile
+              subPath: explorer/connection-profile
+            # Crypto/org materials — sourced from NFS share 
+            - name: fabric-nfs
+              mountPath: /tmp/crypto
+              subPath: organizations               
+              readOnly: true
+            # Wallet persistent store — on NFS share under dedicated subdir
+            - name: fabric-nfs
+              mountPath: /opt/explorer/wallet
+              subPath: explorer/wallet
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            timeoutSeconds: 5
+            failureThreshold: 3
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

@@ -1,0 +1,128 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: explorer-db
+  labels:
+    app: explorer-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: explorerdb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: explorerdb
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                  - key: kubernetes.io/hostname
+                    operator: In
+                    values:
+                      - worker2
+      
+      initContainers:
+        # Create all required NFS directories that don't exist in the image
+        # This runs as root so it can always create dirs on NFS regardless of permissions
+        - name: create-dirs
+          image: busybox:1.36
+          securityContext:
+            runAsUser: 0
+          command:
+            - sh
+            - -c
+            - |
+              echo "Creating required NFS directories..."
+              mkdir -p /fabric-explorer/connection-profile
+              mkdir -p /fabric-explorer/wallet
+              chmod 777 /fabric-explorer/connection-profile
+              chmod 777 /fabric-explorer/wallet
+              echo "Directories ready."
+          volumeMounts:
+            - name: fabric-nfs
+              mountPath: /fabric-explorer/connection-profile
+              subPath: explorer/connection-profile
+            - name: fabric-nfs
+              mountPath: /fabric-explorer/wallet
+              subPath: explorer/wallet
+
+      volumes:
+        - name: fabric-nfs
+          persistentVolumeClaim:
+            claimName: fabric-pvc-nfs
+        - name: pgdata-local
+          hostPath:
+            path: /mnt/fabricNetworkFiles/explorerdb/pgdata
+            type: DirectoryOrCreate
+
+      containers:
+        - name: hyperledger-explorerdb
+          image: ghcr.io/hyperledger-labs/explorer-db:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+              name: postgres
+          env:
+            - name: DATABASE_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_DATABASE
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_USERNAME
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: explorer-db-secret
+                  key: DATABASE_PASSWORD
+          volumeMounts:
+            - name: pgdata-local
+              mountPath: /var/lib/postgresql/data
+
+          # healthcheck
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -p
+                - "5432"
+                - -q
+                - -U
+                - postgres
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -h
+                - localhost
+                - -p
+                - "5432"
+                - -q
+                - -U
+                - postgres
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 5
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"

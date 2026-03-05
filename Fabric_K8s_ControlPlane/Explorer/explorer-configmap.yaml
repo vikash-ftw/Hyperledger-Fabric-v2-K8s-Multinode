@@ -1,0 +1,104 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: explorer-config
+  labels:
+    app: explorer
+data:
+  config.json: |
+    {
+      "network-configs": {
+        "my-network": {
+          "name": "Explorer Test Network",
+          "profile": "./connection-profile/explorer-profile.json"
+        }
+      },
+      "license": "Apache-2.0"
+    }
+  
+  explorer-profile.template.json: |
+    {
+      "name": "my-network",
+      "version": "1.0.0",
+      "client": {
+        "tlsEnable": true,
+        "adminCredential": {
+          "id": "admin",
+          "password": "adminpw"
+        },
+        "enableAuthentication": true,
+        "organization": "Org1MSP",
+        "connection": {
+          "timeout": {
+            "peer": {
+              "endorser": "300"
+            },
+            "orderer": "300"
+          }
+        }
+      },
+      "channels": {
+        "samplechannel": {
+          "peers": {
+            "peer0-org1": {},
+            "peer3-org1": {}
+          }
+        }
+      },
+      "organizations": {
+        "Org1MSP": {
+          "mspid": "Org1MSP",
+          "adminPrivateKey": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/keystore/KEYSTORE_PLACEHOLDER"
+          },
+          "peers": [
+            "peer0-org1",
+            "peer1-org1",
+            "peer2-org1",
+            "peer3-org1"
+          ],
+          "signedCert": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp/signcerts/cert.pem"
+          }
+        }
+      },
+      "peers": {
+        "peer0-org1": {
+          "tlsCACerts": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt"
+          },
+          "url": "grpcs://peer0-org1:7051"
+        },
+        "peer1-org1": {
+          "tlsCACerts": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer1.org1.example.com/tls/ca.crt"
+          },
+          "url": "grpcs://peer1-org1:7051"
+        },
+        "peer2-org1": {
+          "tlsCACerts": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer2.org1.example.com/tls/ca.crt"
+          },
+          "url": "grpcs://peer2-org1:7051"
+        },
+        "peer3-org1": {
+          "tlsCACerts": {
+            "path": "/tmp/crypto/peerOrganizations/org1.example.com/peers/peer3.org1.example.com/tls/ca.crt"
+          },
+          "url": "grpcs://peer3-org1:7051"
+        }
+      }
+    }    
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: explorer-db-secret
+  labels:
+    app: explorerdb
+type: Opaque
+stringData:
+  DATABASE_DATABASE: fabricexplorer
+  DATABASE_USERNAME: hppoc
+  DATABASE_PASSWORD: password    # Change in production
