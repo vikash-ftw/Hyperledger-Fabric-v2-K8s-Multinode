@@ -50,7 +50,7 @@ peer lifecycle chaincode install ./builders/external/chaincode/packaging/smartco
 
 > :memo: **Note:** We need to use this generated PackageID in our Chaincode Deployment yaml file. Edit the respective go or node deployment yaml file and replace the placeholder value for `CHAINCODE_ID`. After change `kubectl apply` yaml files of chaincode to run the chaincode externally as Pod.
 
-- **_Approve_**:
+- **_Approve_**: Replace `<Copied-PkgID>` tag in below commands with copied PackageID.
 ```bash
 # Only one peer
 
