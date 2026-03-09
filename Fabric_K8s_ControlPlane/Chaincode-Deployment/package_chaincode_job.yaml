@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: chaincode-package-job
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: fabric-nfs
+          persistentVolumeClaim:
+            claimName: fabric-pvc-nfs
+      containers:
+        - name: package-chaincode
+          image: hyperledger/fabric-tools:2.3
+          workingDir: /
+          volumeMounts:
+            - mountPath: /scripts
+              name: fabric-nfs
+              subPath: scripts
+            - mountPath: /my-chaincodes
+              name: fabric-nfs
+              subPath: my-chaincodes
+            - mountPath: /chaincode
+              name: fabric-nfs
+              subPath: chaincode
+          command:
+            - /bin/bash
+            - -c
+            - |
+              ./scripts/packageChaincode.sh
