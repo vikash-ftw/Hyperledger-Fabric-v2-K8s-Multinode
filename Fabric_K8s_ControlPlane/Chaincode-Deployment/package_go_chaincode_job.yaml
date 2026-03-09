@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: chaincode-package-job
+  name: go-chaincode-package-job
 spec:
   template:
     spec:
@@ -11,7 +11,7 @@ spec:
           persistentVolumeClaim:
             claimName: fabric-pvc-nfs
       containers:
-        - name: package-chaincode
+        - name: package-go-chaincode
           image: hyperledger/fabric-tools:2.3
           workingDir: /
           volumeMounts:
@@ -28,4 +28,4 @@ spec:
             - /bin/bash
             - -c
             - |
-              ./scripts/packageChaincode.sh
+              ./scripts/packageChaincode.sh go
