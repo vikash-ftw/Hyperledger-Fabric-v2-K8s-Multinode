@@ -1,0 +1,118 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fabric-grafana-dashboard
+  labels:
+    grafana_dashboard: "1"
+data:
+  fabric-peer-dashboard.json: |
+    {
+      "title": "Hyperledger Fabric Peer Monitoring",
+      "schemaVersion": 36,
+      "version": 1,
+      "panels": [
+
+        {
+          "type": "stat",
+          "title": "Ledger Height",
+          "targets": [
+            {
+              "expr": "ledger_blockchain_height",
+              "legendFormat": "{{instance}} - {{channel}}"
+            }
+          ]
+        },
+
+        {
+          "type": "timeseries",
+          "title": "Ledger Height Over Time",
+          "targets": [
+            {
+              "expr": "ledger_blockchain_height",
+              "legendFormat": "{{instance}} - {{channel}}"
+            }
+          ]
+        },
+
+        {
+          "type": "timeseries",
+          "title": "Gossip Messages Sent",
+          "targets": [
+            {
+              "expr": "rate(gossip_comm_messages_sent[1m])"
+            }
+          ]
+        },
+
+        {
+          "type": "timeseries",
+          "title": "Gossip Messages Received",
+          "targets": [
+            {
+              "expr": "rate(gossip_comm_messages_received[1m])"
+            }
+          ]
+        },
+
+        {
+          "type": "timeseries",
+          "title": "CouchDB Processing Latency",
+          "targets": [
+            {
+              "expr": "rate(couchdb_processing_time_sum[1m])"
+            }
+          ]
+        },
+
+        {
+          "type": "timeseries",
+          "title": "Chaincode Launch Duration",
+          "targets": [
+            {
+              "expr": "rate(chaincode_launch_duration_sum[5m])"
+            }
+          ]
+        },
+
+        {
+          "type": "stat",
+          "title": "Go Goroutines",
+          "targets": [
+            {
+              "expr": "go_goroutines"
+            }
+          ]
+        },
+
+        {
+          "type": "stat",
+          "title": "Peer Memory Usage",
+          "targets": [
+            {
+              "expr": "process_resident_memory_bytes"
+            }
+          ]
+        },
+
+        {
+          "type": "stat",
+          "title": "CPU Usage",
+          "targets": [
+            {
+              "expr": "rate(process_cpu_seconds_total[1m])"
+            }
+          ]
+        }
+
+      ]
+    }
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-secret
+type: Opaque
+stringData:
+  admin-user: admin
+  admin-password: <REPLACE_ME>

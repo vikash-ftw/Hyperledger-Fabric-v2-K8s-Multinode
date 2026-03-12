@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fabric-monitor
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      metrics-service: "true"
+  namespaceSelector:
+    any: true
+  endpoints:
+  - port: peer-metrics
+    interval: 15s
