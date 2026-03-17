@@ -1,7 +1,7 @@
 "use strict";
 
-const adminUserId = process.env.CA_ADMIN_USERID;
-const adminPassword = process.env.CA_ADMIN_PASSWORD;
+const adminUserId = "admin";
+const adminPassword = "adminpw";
 const orgUserSecret = process.env.ORG_USER_SECRET;
 // flag env to re-enroll expired certs
 const re_enrollUser = process.env.RE_ENROLL_USER_ID.toLowerCase();

@@ -25,7 +25,5 @@ metadata:
   name: sdk-secret
 type: Opaque
 stringData:
-  CA_ADMIN_USERID: admin
-  CA_ADMIN_PASSWORD: <REPLACE_ME>
-  ORG_USER_ID: fabricUser
+  ORG_USER_ID: SDK_User
   ORG_USER_SECRET: <REPLACE_ME>
