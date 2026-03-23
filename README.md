@@ -7,7 +7,7 @@ Cluster Nodes - `1 ControlPlane & 2 Worker Nodes`
 
 ### Fabric Multinode Setup using Local Persistence and NFS mode
 
-Setup Guide - [Document](https://docs.google.com/document/d/1xyAhyxdZlhnmeau1p4lEDl6GxgPyWhjF2oQbHVzN3kA/edit?usp=sharing)
+Setup Guide - [Document](./Setup-Guide.md)
 
 Sequence to follow -
 1. NFS
