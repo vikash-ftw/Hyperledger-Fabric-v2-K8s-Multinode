@@ -199,5 +199,4 @@ After this change then apply sdk -
 ```bash
 kubectl apply -f SDK-App/k8s
 ```
-
-- SDK server is listening on port: 30000
+- SDK server will listen on port: 30000
