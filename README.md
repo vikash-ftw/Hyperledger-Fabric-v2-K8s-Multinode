@@ -18,12 +18,12 @@ Sequence to follow -
 6. Orderers
 7. Configmaps
 8. Peers
-9. Channel block file creation via peer cli 
-10. Chaincode packaging in NFS mount
-11. Chaincode install in peer via peer cli
+9. Channel block file creation via Peer cli 
+10. Chaincode packaging job in Chaincode-Deployment
+11. Chaincode install in peer via Peer cli
 12. Chaincode-Deployment
-13. Chaincode approve and then commit and invoke via peer cli
-14. CCP generation in NFS mount
+13. Chaincode Approve and Commit via Peer cli 
+14. CCP
 15. SDK-App
 
 ### Reset your existing Kubernetes (K8s) Fabric Cluster

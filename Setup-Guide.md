@@ -93,14 +93,16 @@ kubectl apply -f CA
 ### Generate Certificates
 Now generate the certificates from CA service for orderer and peer organizations 
 ```bash
-kubectl apply -f Certificates
+kubectl apply -f Certificates/register_enroll_job.yaml
 ```
+**Note:** Wait for 2 min until the `register-enroll-certs` pod status is `Completed`. 
 
 ### Create Artifacts
 Create the artifacts for system genesis block and channel
 ```bash
 kubectl apply -f Artifacts
 ```
+**Note:** Wait for pods status to be shown as `Completed`.
 
 ### Start our Orderers
 Create the Orderers using Statefulset object of k8s
@@ -111,6 +113,7 @@ kubectl apply -f Orderers/statefulSets_worker1
 # for orderers scheduled only for worker2
 kubectl apply -f Orderers/statefulSets_worker2
 ```
+**Note:** Wait for pods status to be shown as `Running`.
 
 ### Setup ConfigMap
 Now we apply the configurations related to Peers using ConfigMap 
@@ -131,6 +134,7 @@ Now create the Peer's CLI pods to run our peer specific commands later.
 ```bash
 kubectl apply -f Peers/peers_Cli_NFS
 ```
+**Note:** Wait for pods status to be shown as `Running`.
 
 ### Create Channel block file using Peer CLI
 Go inside the Peer CLI pod then follow the commands from `Peer-CLI-Commands.md` file to create the channel block file -
@@ -139,6 +143,7 @@ Go inside the Peer CLI pod then follow the commands from `Peer-CLI-Commands.md` 
 # To go inside the Peer CLI pod
 kubectl exec -it <Peer_CLI_Pod_ID> -- /bin/bash
 ```
+**Note:** Use `Ctrl + A + D` to exit the container.
 
 ### Chaincode Lifecycle
 
@@ -178,10 +183,10 @@ kubectl apply -f Chaincode-Deployment/go
 Go inside the Peer CLI again and follow the Chaincode Approve and further process from `Peer-CLI-Commands.md` file.
 
 ### CCP Generation
-Go to NFS node and then NFS directory - `/mnt/shared_NFS`
+Now generate Common Connection Profile (CCP) which will be used by SDK.
 
 ```bash
-./scripts/ccp-generate.sh
+kubectl apply -f CCP
 ```
 ### SDK Deployment
 Final Stage is SDK deployment
@@ -194,3 +199,5 @@ After this change then apply sdk -
 ```bash
 kubectl apply -f SDK-App/k8s
 ```
+
+- SDK server is listening on port: 30000
