@@ -5,9 +5,9 @@ metadata:
   labels:
     grafana_dashboard: "1"
 data:
-  fabric-peer-dashboard.json: |
+  fabric-dashboard.json: |
     {
-      "title": "Hyperledger Fabric Peer Monitoring",
+      "title": "Hyperledger Fabric v2.3 Monitoring",
       "schemaVersion": 36,
       "version": 1,
       "panels": [
