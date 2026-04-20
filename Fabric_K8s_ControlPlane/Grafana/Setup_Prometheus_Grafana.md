@@ -15,6 +15,9 @@ helm repo add prometheus-community https://prometheus-community.github.io/helm-c
 # now update helm repo
 helm repo update
 ```
+
+- Edit the Configs for Grafana Login credentials: Edit the `grafana-configs.yaml` file and replace `admin-password: <REPLACE_ME>` with your own password.
+
 - Apply all the Prometheus and Grafana related configs in this `Grafana` directory: like svc, configMaps, secrets and service-monitor
 ```bash
 kubectl apply -f .
