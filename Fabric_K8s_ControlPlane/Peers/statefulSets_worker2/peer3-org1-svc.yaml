@@ -28,6 +28,7 @@ kind: Service
 metadata:
   labels:
     app: peer3-org1
+    component: peer
     metrics-service: "true"
   name: peer3-org1-metrics
 spec:

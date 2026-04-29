@@ -28,13 +28,14 @@ kind: Service
 metadata:
   labels:
     app: peer0-org1
+    component: peer
     metrics-service: "true"
   name: peer0-org1-metrics
 spec:
   type: ClusterIP
   ports:
   - name: "peer-metrics"
-    port: 9443
-    targetPort: 9443
+    port: 9440
+    targetPort: 9440
   selector:
     name: peer0-org1
