@@ -1,15 +1,36 @@
+# ---------- PEER Service Monitor ----------
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: fabric-monitor
+  name: fabric-peer-monitor
   labels:
     release: monitoring
 spec:
   selector:
     matchLabels:
+      component: peer
       metrics-service: "true"
   namespaceSelector:
     any: true
   endpoints:
   - port: peer-metrics
-    interval: 15s
+    interval: 20s
+
+---
+# ---------- ORDERER Service Monitor ----------
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fabric-orderer-monitor
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      component: orderer
+      metrics-service: "true"
+  namespaceSelector:
+    any: true
+  endpoints:
+  - port: orderer-metrics
+    interval: 20s

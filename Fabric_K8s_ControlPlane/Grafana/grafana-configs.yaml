@@ -10,100 +10,223 @@ data:
       "title": "Hyperledger Fabric v2.3 Monitoring",
       "schemaVersion": 36,
       "version": 1,
+      "refresh": "20s",
+      "time": { "from": "now-1h", "to": "now" },
       "panels": [
-
+        {
+          "type": "row",
+          "title": "Hyperledger Fabric Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }
+        },
         {
           "type": "stat",
-          "title": "Ledger Height",
-          "targets": [
-            {
-              "expr": "ledger_blockchain_height",
-              "legendFormat": "{{instance}} - {{channel}}"
-            }
-          ]
+          "title": "Fabric Version",
+          "gridPos": { "h": 5, "w": 4, "x": 0, "y": 1 },
+          "targets": [ { "expr": "max(fabric_version) by (version)", "legendFormat": "{{version}}" } ],
+          "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "#116EB3" } } },
+          "options": { "colorMode": "value", "graphMode": "none", "textMode": "name", "justifyMode": "center" }
         },
-
+        {
+          "type": "gauge",
+          "title": "Ledger Block Height",
+          "gridPos": { "h": 5, "w": 5, "x": 4, "y": 1 },
+          "targets": [ { "expr": "max(ledger_blockchain_height) by (channel)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "min": 0, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "#D16200", "value": null } ] } } }
+        },
+        {
+          "type": "gauge",
+          "title": "Ledger Transaction Count",
+          "gridPos": { "h": 5, "w": 5, "x": 9, "y": 1 },
+          "targets": [ { "expr": "max(ledger_transaction_count) by (channel)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "min": 0, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "#66107A", "value": null } ] } } }
+        },
+        {
+          "type": "gauge",
+          "title": "Proposals Received",
+          "gridPos": { "h": 5, "w": 5, "x": 14, "y": 1 },
+          "targets": [ { "expr": "sum(endorser_proposals_received)", "legendFormat": "Total Received" } ],
+          "fieldConfig": { "defaults": { "min": 0, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "#116EB3", "value": null } ] } } }
+        },
+        {
+          "type": "gauge",
+          "title": "Proposals Successful",
+          "gridPos": { "h": 5, "w": 5, "x": 19, "y": 1 },
+          "targets": [ { "expr": "sum(endorser_successful_proposals)", "legendFormat": "Total Success" } ],
+          "fieldConfig": { "defaults": { "min": 0, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "#9434BD", "value": null } ] } } }
+        },
+        {
+          "type": "row",
+          "title": "Kubernetes Machine Node Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 6 }
+        },
+        {
+          "type": "gauge",
+          "title": "Node CPU Utilization (%)",
+          "gridPos": { "h": 6, "w": 4, "x": 0, "y": 7 },
+          "targets": [ { "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 75 }, { "color": "red", "value": 90 } ] } } }
+        },
+        {
+          "type": "gauge",
+          "title": "Node Memory Utilization (%)",
+          "gridPos": { "h": 6, "w": 4, "x": 4, "y": 7 },
+          "targets": [ { "expr": "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)", "legendFormat": "{{instance}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 80 }, { "color": "red", "value": 90 } ] } } }
+        },
         {
           "type": "timeseries",
-          "title": "Ledger Height Over Time",
-          "targets": [
-            {
-              "expr": "ledger_blockchain_height",
-              "legendFormat": "{{instance}} - {{channel}}"
-            }
-          ]
+          "title": "Node CPU Trend",
+          "gridPos": { "h": 6, "w": 8, "x": 8, "y": 7 },
+          "targets": [ { "expr": "100 - (avg by (instance) (rate(node_cpu_seconds_total{mode=\"idle\"}[5m])) * 100)", "legendFormat": "{{instance}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
         },
-
         {
           "type": "timeseries",
-          "title": "Gossip Messages Sent",
-          "targets": [
-            {
-              "expr": "rate(gossip_comm_messages_sent[1m])"
-            }
-          ]
+          "title": "Node Memory Trend",
+          "gridPos": { "h": 6, "w": 8, "x": 16, "y": 7 },
+          "targets": [ { "expr": "100 * (1 - node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)", "legendFormat": "{{instance}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
         },
-
+        {
+          "type": "row",
+          "title": "CouchDB Peer Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 }
+        },
+        {
+          "type": "gauge",
+          "title": "CouchDB CPU Utilization (%)",
+          "gridPos": { "h": 6, "w": 4, "x": 0, "y": 14 },
+          "targets": [ { "expr": "sum(rate(container_cpu_usage_seconds_total{image=~\".*couchdb.*\", container!=\"\"}[5m])) by (pod) * 100", "legendFormat": "{{pod}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "color": { "mode": "thresholds" }, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "orange", "value": 75 }, { "color": "red", "value": 90 } ] } } }
+        },
+        {
+          "type": "gauge",
+          "title": "CouchDB Memory Usage",
+          "gridPos": { "h": 6, "w": 4, "x": 4, "y": 14 },
+          "targets": [ { "expr": "sum(container_memory_working_set_bytes{image=~\".*couchdb.*\", container!=\"\"}) by (pod)", "legendFormat": "{{pod}}" } ],
+          "fieldConfig": { "defaults": { "unit": "bytes", "min": 0, "color": { "mode": "palette-classic" } } }
+        },
         {
           "type": "timeseries",
-          "title": "Gossip Messages Received",
-          "targets": [
-            {
-              "expr": "rate(gossip_comm_messages_received[1m])"
-            }
-          ]
+          "title": "CouchDB CPU Trend",
+          "gridPos": { "h": 6, "w": 8, "x": 8, "y": 14 },
+          "targets": [ { "expr": "sum(rate(container_cpu_usage_seconds_total{image=~\".*couchdb.*\", container!=\"\"}[5m])) by (pod) * 100", "legendFormat": "{{pod}}" } ],
+          "fieldConfig": { "defaults": { "unit": "percent", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
         },
-
         {
           "type": "timeseries",
-          "title": "CouchDB Processing Latency",
-          "targets": [
-            {
-              "expr": "rate(couchdb_processing_time_sum[1m])"
-            }
-          ]
+          "title": "CouchDB Memory Trend",
+          "gridPos": { "h": 6, "w": 8, "x": 16, "y": 14 },
+          "targets": [ { "expr": "sum(container_memory_working_set_bytes{image=~\".*couchdb.*\", container!=\"\"}) by (pod)", "legendFormat": "{{pod}}" } ],
+          "fieldConfig": { "defaults": { "unit": "bytes", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
         },
-
+        {
+          "type": "timeseries",
+          "title": "Couch DB Processing Time",
+          "gridPos": { "h": 6, "w": 24, "x": 0, "y": 20 },
+          "targets": [ { "expr": "histogram_quantile(0.95, sum(rate(couchdb_processing_time_bucket[5m])) by (le))", "legendFormat": "Processing Time" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "color": { "mode": "fixed", "fixedColor": "green" }, "custom": { "fillOpacity": 20, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "row",
+          "title": "Ledger Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 26 }
+        },
+        {
+          "type": "timeseries",
+          "title": "Ledger Block Processing Time",
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 27 },
+          "targets": [ { "expr": "histogram_quantile(0.95, sum(rate(ledger_block_processing_time_bucket[5m])) by (le))", "legendFormat": "Block Processing" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "timeseries",
+          "title": "StateDB Commit Time",
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 27 },
+          "targets": [ { "expr": "histogram_quantile(0.95, sum(rate(ledger_statedb_commit_time_bucket[5m])) by (le))", "legendFormat": "Commit Time" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "row",
+          "title": "Chaincode Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 33 }
+        },
+        {
+          "type": "timeseries",
+          "title": "Chaincode Shim Requests",
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 34 },
+          "targets": [
+            { "expr": "sum(rate(chaincode_shim_requests_received[5m])) by (chaincode)", "legendFormat": "Received - {{chaincode}}" },
+            { "expr": "sum(rate(chaincode_shim_requests_completed[5m])) by (chaincode)", "legendFormat": "Completed - {{chaincode}}" }
+          ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 10, "lineWidth": 2 } } }
+        },
         {
           "type": "timeseries",
           "title": "Chaincode Launch Duration",
-          "targets": [
-            {
-              "expr": "rate(chaincode_launch_duration_sum[5m])"
-            }
-          ]
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 34 },
+          "targets": [ { "expr": "sum(rate(chaincode_launch_duration_sum[5m])) by (chaincode)", "legendFormat": "Duration - {{chaincode}}" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 30, "drawStyle": "bars" } } }
         },
-
         {
-          "type": "stat",
-          "title": "Go Goroutines",
-          "targets": [
-            {
-              "expr": "go_goroutines"
-            }
-          ]
+          "type": "row",
+          "title": "Orderer Metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 40 }
         },
-
         {
-          "type": "stat",
-          "title": "Peer Memory Usage",
-          "targets": [
-            {
-              "expr": "process_resident_memory_bytes"
-            }
-          ]
+          "type": "timeseries",
+          "title": "Orderer Raft Committed Blocks",
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 41 },
+          "targets": [ { "expr": "max(consensus_etcdraft_committed_block_number) by (channel)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 20, "gradientMode": "hue", "drawStyle": "line" } } }
         },
-
         {
-          "type": "stat",
-          "title": "CPU Usage",
-          "targets": [
-            {
-              "expr": "rate(process_cpu_seconds_total[1m])"
-            }
-          ]
+          "type": "timeseries",
+          "title": "Orderer Raft Persist Duration",
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 41 },
+          "targets": [ { "expr": "histogram_quantile(0.95, sum(rate(consensus_etcdraft_data_persist_duration_bucket[5m])) by (le, channel))", "legendFormat": "Persist Duration" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "row",
+          "title": "Transaction and Batch / Block metrics",
+          "gridPos": { "h": 1, "w": 24, "x": 0, "y": 48 }
+        },
+        {
+          "type": "timeseries",
+          "title": "Batch Counter Rate",
+          "gridPos": { "h": 6, "w": 12, "x": 0, "y": 49 },
+          "targets": [ { "expr": "sum(rate(consensus_etcdraft_committed_block_number[5m])) by (channel)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "timeseries",
+          "title": "Transactions Counter Rate",
+          "gridPos": { "h": 6, "w": 12, "x": 12, "y": 49 },
+          "targets": [ { "expr": "max(rate(ledger_transaction_count[5m])) by (channel)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "timeseries",
+          "title": "Transactions per Batch",
+          "gridPos": { "h": 6, "w": 8, "x": 0, "y": 55 },
+          "targets": [ { "expr": "max(increase(ledger_transaction_count[5m])) by (channel) / (max(increase(ledger_blockchain_height[5m])) by (channel) > 0)", "legendFormat": "{{channel}}" } ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 10, "lineWidth": 2 } } }
+        },
+        {
+          "type": "timeseries",
+          "title": "Average Batch Size",
+          "gridPos": { "h": 6, "w": 8, "x": 8, "y": 55 },
+          "targets": [ { "expr": "max(increase(ledger_transaction_count[1h])) by (channel) / (max(increase(ledger_blockchain_height[1h])) by (channel) > 0)", "legendFormat": "{{channel}} (1h Avg)" } ],
+          "fieldConfig": { "defaults": { "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
+        },
+        {
+          "type": "timeseries",
+          "title": "Time to Process the Batch",
+          "gridPos": { "h": 6, "w": 8, "x": 16, "y": 55 },
+          "targets": [ { "expr": "histogram_quantile(0.95, sum(rate(consensus_etcdraft_data_persist_duration_bucket[5m])) by (le, channel))", "legendFormat": "Persist Time" } ],
+          "fieldConfig": { "defaults": { "unit": "s", "custom": { "fillOpacity": 15, "gradientMode": "opacity" } } }
         }
-
       ]
     }
 
