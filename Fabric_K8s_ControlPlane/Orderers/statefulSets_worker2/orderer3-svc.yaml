@@ -12,3 +12,21 @@ spec:
         - protocol: TCP
           port: 7050
           name: grpc 
+---
+#---------------- Orderer3 Metrics Service ---------------
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: orderer3
+    component: orderer
+    metrics-service: "true"
+  name: orderer3-metrics
+spec:
+  type: ClusterIP
+  ports:
+  - name: "orderer-metrics"
+    port: 9433
+    targetPort: 9433
+  selector:
+    name: orderer3
