@@ -8,4 +8,5 @@ RUN npm install --quiet
 # Copy the rest app files
 COPY . .
 EXPOSE 8000
+RUN npm run swagger
 CMD ["node","./src/app.js"]

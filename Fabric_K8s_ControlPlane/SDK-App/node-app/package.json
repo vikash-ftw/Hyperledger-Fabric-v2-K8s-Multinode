@@ -1,13 +1,14 @@
 {
   "name": "sdk-server",
   "version": "1.0.0",
-  "description": "Fabric Node SDK server for handling request on Fabric blockchain",
+  "description": "Fabric Node SDK server for K8s Fabric blockchain platform",
   "type": "module",
   "main": "./src/app.js",
   "engines": {
     "node": ">=20.14"
   },
   "scripts": {
+    "swagger": "node ./src/utils/swagger.js",
     "start": "node ./src/app.js"
   },
   "engineStrict": true,
@@ -19,6 +20,10 @@
     "helmet": "^8.1.0",
     "dotenv": "^16.4.5",
     "fabric-ca-client": "2.2.20",
-    "fabric-network": "2.2.20"
+    "fabric-network": "2.2.20",
+    "swagger-ui-express": "^5.0.1"
+  },
+  "devDependencies": {
+    "swagger-autogen": "^2.23.7"
   }
 }

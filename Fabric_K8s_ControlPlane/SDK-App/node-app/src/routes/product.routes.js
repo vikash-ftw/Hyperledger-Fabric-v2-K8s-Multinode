@@ -13,12 +13,12 @@ const router = Router();
 
 router.route("/addProduct").post(addProduct);
 
-router.route("/getProduct").get(getProductById);
+router.route("/getProduct").post(getProductById);
 
-router.route("/queryByProductOwner").get(queryOnProductOwner);
+router.route("/queryByProductOwner").post(queryOnProductOwner);
 
-router.route("/queryByProductName").get(queryOnProductName);
+router.route("/queryByProductName").post(queryOnProductName);
 
-router.route("/getTxnHistory").get(getTransactionHistory);
+router.route("/getTxnHistory").post(getTransactionHistory);
 
 export default router;

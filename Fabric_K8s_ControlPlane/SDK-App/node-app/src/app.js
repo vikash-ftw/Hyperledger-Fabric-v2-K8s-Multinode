@@ -4,31 +4,31 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import crypto from "crypto";
+import swaggerUi from 'swagger-ui-express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
+// for parsing json in req body
+app.use(express.json());
+
 const port = process.env.PORT;
+const nodePort = process.env.NODE_PORT;
 
 // for enabling CORS policy
 app.use(cors());
 
 // to set strict security for HTTP headers
-// generating CSP random nonce
-function generateNonce() {
-  return crypto.randomBytes(16).toString("hex").substr(0, 8);
-}
 app.use(
   helmet({
     contentSecurityPolicy: {
+      useDefaults: true,
       directives: {
-        scriptSrc: [
-          "'self'",
-          (req, res) => {
-            const nonce = generateNonce();
-            res.locals.nonce = nonce;
-            return `'nonce-${nonce}'`;
-          },
-        ],
-        styleSrc: ["'self'"],
+        upgradeInsecureRequests: null,   // remove the forced http→https upgrade
       },
     },
   })
@@ -54,9 +54,6 @@ app.use((req, res, next) => {
 
 // Disable ETag generation globally
 app.set("etag", false);
-
-// for parsing json in req body
-app.use(express.json());
 
 const org = process.env.ORG_MSP;
 const userId = process.env.ORG_USER_ID;
@@ -91,7 +88,11 @@ const startServer = async () => {
     console.log("instance connection: " + instance);
 
     app.listen(port, () => {
-      console.log(`Server is listening at port- ${port}`);
+      console.log(`Server is listening internally on port ${port}`);
+      if(nodePort) {
+        console.log(`Reachable externally at port ${nodePort}`);
+      }
+      console.log(`Swagger docs available at '/api-docs'`)
     });
   } catch (error) {
     console.log(`Server Error: ${error}`);
@@ -101,7 +102,27 @@ const startServer = async () => {
 // import routes
 import productRouter from "./routes/product.routes.js";
 
+// Read the generated Swagger JSON file
+const swaggerFilePath = path.join(__dirname, 'swagger-output.json');
+const swaggerDocument = JSON.parse(fs.readFileSync(swaggerFilePath, 'utf8'));
+
+// Mount application routes
 app.use("/products", productRouter);
+
+// helmet csp management for swagger
+const swaggerCsp = helmet.contentSecurityPolicy({
+  useDefaults: true,
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    styleSrc: ["'self'", "'unsafe-inline'"],
+    imgSrc: ["'self'", "data:"],
+    upgradeInsecureRequests: null,
+  },
+});
+
+// Mount the Swagger UI
+app.use('/api-docs', swaggerCsp, swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // middleware to handle errors
 import { ApiError } from "./utils/ApiError.js";

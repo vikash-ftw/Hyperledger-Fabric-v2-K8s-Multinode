@@ -8,6 +8,7 @@ data:
   CHANNEL_NAME: samplechannel
   CHAINCODE_NAME: <Chaincode-Name>  # smartcontract-node or smartcontract-go
   RE_ENROLL_USER_ID: "false"  # After renewing certs immediately set it to false then apply it
+  NODE_PORT: "30000"
   config.json: |-
       {
       "request-timeout" : 40000,
